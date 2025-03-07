@@ -28,7 +28,7 @@ Solutions to Practice Test - Manual Scheduling
     kubectl get pods --namespace kube-system
     ```
 
-    There is a key pod missing here!
+    There is a key pod missing here! 没有调度器组件！
     </details>
 
 1.  <details>
@@ -56,6 +56,7 @@ Solutions to Practice Test - Manual Scheduling
     ```
 
     ```
+    nodeName: node01    # add this line 即使调度器不存在；指明节点名字，会把pod部署在node01上。
     kubectl delete -f nginx.yaml
     kubectl create -f nginx.yaml
     ```
