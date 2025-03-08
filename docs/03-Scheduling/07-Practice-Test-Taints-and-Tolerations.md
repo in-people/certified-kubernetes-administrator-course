@@ -23,7 +23,7 @@ Solutions to the Practice Test - Taints and Tolerations
 
     Find the `Taints` property in the output.
     </details>
-、、、shell
+ ```shell
 controlplane ~ ➜  kubectl describe no node01
 Name:               node01
 Roles:              <none>
@@ -42,7 +42,7 @@ Annotations:        flannel.alpha.coreos.com/backend-data: {"VNI":1,"VtepMAC":"7
 CreationTimestamp:  Sat, 08 Mar 2025 11:24:01 +0000
 Taints:             <none>
 Unschedulable:      false
-、、、
+ ```
 1.  <details>
     <summary>Create a taint on node01 with key of spray, value of mortein and effect of NoSchedule</summary>
 
