@@ -40,6 +40,7 @@ Solutions to Practice Test - Labels and Selectors
 1.  <details>
     <summary>Identify the POD which is part of the prod environment, the finance BU and of frontend tier?</summary>
 
+    筛选含有三个标签env=prod,bu=finance,tier=frontend的pod
     We can combine label expressions with comma. Only items with _all_ the given label/value pairs will be returned, i.e. it is an `and` condition.
 
     ```
