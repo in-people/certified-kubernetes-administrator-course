@@ -23,6 +23,8 @@ Solutions to the Practice Test - Taints and Tolerations
 
     Find the `Taints` property in the output.
     </details>
+    ![Uploading image.png…]()
+
 
 1.  <details>
     <summary>Create a taint on node01 with key of spray, value of mortein and effect of NoSchedule</summary>
