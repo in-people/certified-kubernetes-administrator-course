@@ -23,8 +23,25 @@ Solutions to the Practice Test - Taints and Tolerations
 
     Find the `Taints` property in the output.
     </details>
-    ![Uploading image.png…]()
-
+ 
+controlplane ~ ➜  kubectl describe no node01
+Name:               node01
+Roles:              <none>
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=node01
+                    kubernetes.io/os=linux
+Annotations:        flannel.alpha.coreos.com/backend-data: {"VNI":1,"VtepMAC":"7a:58:5d:91:4c:02"}
+                    flannel.alpha.coreos.com/backend-type: vxlan
+                    flannel.alpha.coreos.com/kube-subnet-manager: true
+                    flannel.alpha.coreos.com/public-ip: 192.168.31.52
+                    kubeadm.alpha.kubernetes.io/cri-socket: unix:///var/run/containerd/containerd.sock
+                    node.alpha.kubernetes.io/ttl: 0
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+CreationTimestamp:  Sat, 08 Mar 2025 11:24:01 +0000
+Taints:             <none>
+Unschedulable:      false
 
 1.  <details>
     <summary>Create a taint on node01 with key of spray, value of mortein and effect of NoSchedule</summary>
