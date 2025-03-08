@@ -101,6 +101,19 @@ Unschedulable:      false
 
     </details>
 
+```shell
+Events:
+  Type     Reason            Age   From               Message
+  ----     ------            ----  ----               -------
+  Warning  FailedScheduling  29s   default-scheduler  0/2 nodes are available: 1 node(s) had untolerated taint {node-role.kubernetes.io/control-plane: }, 1 node(s) had untolerated taint {spray: mortein}. preemption: 0/2 nodes are available: 2 Preemption is not helpful for scheduling.
+
+警告 FailedScheduling 29秒前 default-scheduler
+0/2 个节点可用：
+
+1 个节点具有未容忍的污点 {node-role.kubernetes.io/control-plane: }。
+1 个节点具有未容忍的污点 {spray: mortein}。
+```
+
 1.  <details>
     <summary>Create another pod named bee with the nginx image, which has a toleration set to the taint mortein.</summary>
 
