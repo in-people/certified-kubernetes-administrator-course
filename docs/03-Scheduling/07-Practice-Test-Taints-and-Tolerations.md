@@ -52,7 +52,8 @@ Unschedulable:      false
     kubectl taint nodes node01 spray=mortein:NoSchedule
     ```
     </details>
-    ```shell
+    
+```shell
     controlplane ~ ➜  kubectl describe no node01
 Name:               node01
 Roles:              <none>
