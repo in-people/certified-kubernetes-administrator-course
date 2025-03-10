@@ -43,8 +43,17 @@ Solutions to the practice test - static pods
 ```shell
 controlplane /etc/kubernetes/manifests ➜  ls
 etcd.yaml  kube-apiserver.yaml  kube-controller-manager.yaml  kube-scheduler.yaml
-  <details>
+
+
+node01 ~ ✖ ps -ef | grep /usr/bin/kubelet
+root       16018       1  0 12:34 ?        00:00:03 /usr/bin/kubelet --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --config=/var/lib/kubelet/config.yaml --container-runtime-endpoint=unix:///var/run/containerd/containerd.sock --pod-infra-container-image=registry.k8s.io/pause:3.10
+root       18595   18313  0 12:39 pts/0    00:00:00 grep /usr/bin/kubelet
+
+node01 ~ ➜  grep -i staticpod /var/lib/kubelet/config.yaml
+staticPodPath: /etc/just-to-mess-with-you
+
 ```
+  <details>
 
   ```
   $ ps -aux | grep kubelet
