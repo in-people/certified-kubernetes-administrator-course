@@ -126,6 +126,7 @@ Annotations:        flannel.alpha.coreos.com/backend-data: {"VNI":1,"VtepMAC":"3
                   operator: Exists
       ```
 
+affinity 与 containers属于同一级。
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
