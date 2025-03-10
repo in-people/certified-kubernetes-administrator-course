@@ -19,6 +19,23 @@ Solutions to practice test - node affinity
     ```
 
     </details>
+```shell
+controlplane ~ ➜  kubectl describe no node01 
+Name:               node01
+Roles:              <none>
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=node01
+                    kubernetes.io/os=linux
+Annotations:        flannel.alpha.coreos.com/backend-data: {"VNI":1,"VtepMAC":"36:38:b0:27:45:5c"}
+                    flannel.alpha.coreos.com/backend-type: vxlan
+                    flannel.alpha.coreos.com/kube-subnet-manager: true
+                    flannel.alpha.coreos.com/public-ip: 192.168.143.4
+                    kubeadm.alpha.kubernetes.io/cri-socket: unix:///var/run/containerd/containerd.sock
+                    node.alpha.kubernetes.io/ttl: 0
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+```
 
 1.  <details>
     <summary>What is the value set to the label key beta.kubernetes.io/arch on node01?</summary>
@@ -33,6 +50,7 @@ Solutions to practice test - node affinity
     kubectl label node node01 color=blue
     ```
     </details>
+    color=blue 不能有空格！
 
 1.  <details>
     <summary>Create a new deployment named blue with the nginx image and 3 replicas.</summary>
@@ -107,6 +125,40 @@ Solutions to practice test - node affinity
                 - key: node-role.kubernetes.io/control-plane
                   operator: Exists
       ```
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: red
+  name: red
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: red
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: red
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: Exists
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+status: {}
+```
     1. Save, exit and create the deployment
       ```
       kubectl create -f red.yaml
