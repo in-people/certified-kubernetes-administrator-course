@@ -29,7 +29,17 @@ Solutions to practice test - resource limtis
   ```
   </details>
 
-- The status 'OOMKilled' indicates that the pod ran out of memory. Identify the memory limit set on the POD.
+- The status 'OOMKilled' indicates that the pod ran out of memory. 内存用尽导致pod起不来。
+-  Identify the memory limit set on the POD.
+```yaml
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       OOMKilled
+      Exit Code:    1
+      Started:      Mon, 10 Mar 2025 11:35:19 +0000
+      Finished:     Mon, 10 Mar 2025 11:35:20 +0000
+```
 
 - Generate a template of the existing pod.
 
@@ -50,6 +60,27 @@ Solutions to practice test - resource limtis
         memory: 20Mi
   ---
   ```
+  
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: elephant
+  name: elephant
+spec:
+  containers:
+  - image: polinux/stress
+    name: elephant
+    resources:
+       limits:
+         memory: 20Mi
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+```
+
   </details>
 
   Delete the pod and recreate it.
