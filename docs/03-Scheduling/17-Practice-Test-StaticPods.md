@@ -3,7 +3,7 @@
   
 Solutions to the practice test - static pods
 - Run the command kubectl get pods --all-namespaces and look for those with -controlplane appended in the name
-  
+  观察后缀是-controlplane的pod
   <details>
 
   ```
@@ -40,7 +40,11 @@ Solutions to the practice test - static pods
 
 - Run the command ps -aux | grep kubelet and identify the config file - --config=/var/lib/kubelet/config.yaml. Then checkin the config file for staticPdPath.
 
+```shell
+controlplane /etc/kubernetes/manifests ➜  ls
+etcd.yaml  kube-apiserver.yaml  kube-controller-manager.yaml  kube-scheduler.yaml
   <details>
+```
 
   ```
   $ ps -aux | grep kubelet
