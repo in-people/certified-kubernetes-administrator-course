@@ -11,7 +11,8 @@
    - Quizzes
    - Practice Questions
    - Q & A Section
-   
+
+   每周7个Practice;并听完对应的课程，做好node。
 ## Pre-Requisites
  
    - Docker
