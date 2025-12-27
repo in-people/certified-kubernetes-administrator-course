@@ -87,7 +87,7 @@ Solutions to practice test - network policies
   
   </details>
 
-  ```json
+```json
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -120,5 +120,5 @@ spec:
       protocol: UDP
     - port: 53
       protocol: TCP # 将第二个UDP改为TCP，DNS需要两者
-  ```
+ ```
   
