@@ -86,5 +86,39 @@ Solutions to practice test - network policies
   ```
   
   </details>
-  
+
+  ```json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: internal-policy # 修正1：缩进对齐，删除多余空格
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      name: internal # 修正2：移除了这里的 “-” 错误标记
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          name: payroll
+    ports:
+    - port: 8080
+      protocol: TCP
+  - to:
+    - podSelector:
+        matchLabels:
+          name: mysql
+    ports:
+    - port: 3306
+      protocol: TCP
+  # 修正3 & 4：新增独立的DNS规则块，并修正协议重复错误
+  - ports: # 这是一个独立的egress规则项，需要添加 “-” 并用 “to:” 或保留为空
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP # 将第二个UDP改为TCP，DNS需要两者
+  ```
   
