@@ -312,3 +312,44 @@ spec:
 ```
 
 
+## 🔍 一、这个命令的作用
+
+部署 **Metrics Server** —— Kubernetes 官方推荐的 **集群级资源指标（CPU/内存使用率）收集器**。
+
+### ✅ 为什么需要它？
+- `kubectl top node` 或 `kubectl top pod` 命令依赖 Metrics Server 提供实时资源使用数据。
+- **Horizontal Pod Autoscaler（HPA，水平 Pod 自动扩缩容）** 也需要它来获取指标。
+- 它是 Kubernetes 资源监控体系的核心组件之一（替代了早期的 Heapster）。
+
+---
+
+## 📦 二、`components.yaml` 中创建了哪些资源？（逐项解释）
+
+你看到的输出正是该 YAML 文件中定义的 Kubernetes 对象：
+
+| 资源 | 作用说明 |
+|------|--------|
+| `serviceaccount/metrics-server` | 为 Metrics Server Pod 创建专用的服务账户（用于身份认证） |
+| `clusterrole: system:aggregated-metrics-reader` | 定义一个集群角色：允许读取“聚合 API”中的指标数据（供 APIService 使用） |
+| `clusterrole: system:metrics-server` | 定义主权限：允许 Metrics Server 从 Kubelet 获取节点和 Pod 的资源使用情况 |
+| `rolebinding: metrics-server-auth-reader` | 在 `kube-system` 命名空间中，允许 Metrics Server 读取 `extension-apiserver-authentication` ConfigMap（用于认证） |
+| `clusterrolebinding: system:auth-delegator` | 允许 Metrics Server 将认证请求委托给主 API Server（用于代理请求） |
+| `clusterrolebinding: system:metrics-server` | 将 `system:metrics-server` ClusterRole 绑定到 `metrics-server` ServiceAccount，授予实际权限 |
+| `service/metrics-server` | 创建一个 ClusterIP 类型的 Service，暴露 Metrics Server（通常只在集群内部访问） |
+| `deployment.apps/metrics-server` | 部署 Metrics Server 应用本身（通常 1 副本，运行在 `kube-system` 命名空间） |
+| `apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io` | **最关键！** 将 Metrics Server 注册为 Kubernetes 的 **聚合 API（Aggregated API）**，使得 `kubectl top` 等命令能通过标准 API 路径访问指标 |
+
+> 💡 **聚合 API 是什么？**  
+> 它允许第三方服务（如 Metrics Server）将自己的 API 接入 Kubernetes 主 API Server 的路径下（如 `/apis/metrics.k8s.io/v1beta1`），对用户透明。
+
+---
+
+## ⚙️ 三、Metrics Server 如何工作？
+
+1. **Metrics Server Pod 启动**，以 `metrics-server` ServiceAccount 身份运行。
+2. 它通过 **安全连接（TLS）** 访问每个节点上的 **Kubelet `/stats/summary` 或 `/metrics/resource` 端点**，拉取 CPU/内存使用数据。
+3. 数据被缓存并暴露在自己的 HTTP API 上（如 `/apis/metrics.k8s.io/v1beta1/nodes`）。
+4. Kubernetes API Server 通过 **APIService 配置**，将对 `metrics.k8s.io` 的请求**代理**给 Metrics Server。
+5. 用户执行 `kubectl top pod` 时：
+   ```bash
+   kubectl top pod → API Server → /apis/metrics.k8s.io/... → Metrics Server → 返回指标
