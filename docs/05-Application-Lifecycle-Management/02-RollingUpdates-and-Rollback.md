@@ -60,7 +60,7 @@ In this section, we will take a look at rolling updates and rollback in a deploy
   ```
   ![ka](../../images/ka.PNG)
   
-## Recreate vs RollingUpdate
+## Recreate vs RollingUpdate 两种不同的策略 StrategyType
   
   ![rcrl](../../images/rcrl.PNG)
   
