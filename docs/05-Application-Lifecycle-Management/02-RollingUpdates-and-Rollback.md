@@ -22,7 +22,7 @@ In this section, we will take a look at rolling updates and rollback in a deploy
 ## Deployment Strategies
 - There are 2 types of deployment strategies
   1. Recreate
-  2. RollingUpdate (Default Strategy)
+  2. RollingUpdate (Default Strategy) 滚动更新
   
   ![dst](../../images/dst.PNG)
   
