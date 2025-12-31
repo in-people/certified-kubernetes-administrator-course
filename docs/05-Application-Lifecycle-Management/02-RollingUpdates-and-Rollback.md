@@ -72,9 +72,9 @@ In this section, we will take a look at rolling updates and rollback in a deploy
   
   ![rb](../../images/rb.PNG)
   
-- To undo a change
+- To undo a change 回滚（撤销）名为 myapp-deployment 的 Deployment 到上一个版本
   ```
-  $ kubectl rollout undo deployment/myapp-deployment
+  $ kubectl rollout undo deployment/myapp-deployment 
   ```
   
 ## kubectl create
