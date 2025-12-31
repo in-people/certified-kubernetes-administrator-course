@@ -8,11 +8,11 @@ In this section, we will take a look at rolling updates and rollback in a deploy
   ![rollv](../../images/rollv.PNG)
   
 ## Rollout commands
-- You can see the status of the rollout by the below command
+- You can see the status of the rollout by the below command  查看应用部署的状态
   ```
   $ kubectl rollout status deployment/myapp-deployment
   ```
-- To see the history and revisions
+- To see the history and revisions 查看历史记录与版本修订信息，
   ```
   $ kubectl rollout history deployment/myapp-deployment
   ```
