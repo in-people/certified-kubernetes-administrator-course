@@ -17,6 +17,22 @@ In this section we will take a look at image security
   ```
   
   ![img1](../../images/img1.PNG)
+
+1、镜像仓库 
+  Docker 镜像的存储位置  
+常用 registry：  
+docker.io - Docker Hub（默认，可省略）  
+gcr.io - Google Container Registry  
+quay.io - Red Hat 的镜像仓库  
+私有仓库地址，如 registry.example.com:5000  
+
+2、UserAccount/Namespace（用户账户/命名空间）
+在 registry 中的用户或组织名称  
+用于区分不同用户/组织的镜像  
+
+3、 Repository 仓库名
+具体的镜像仓库名称  
+通常对应一个特定的应用或服务  
   
   ![img2](../../images/img2.PNG)
   
