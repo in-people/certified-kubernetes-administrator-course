@@ -1,73 +1,95 @@
-# Practice Test - Security Context
-  - Take me to [Practice Test](https://kodekloud.com/topic/practice-test-security-contexts/)
-  
-Solutions to practice test - security context
-- Run the command 'kubectl exec ubuntu-sleeper -- whoami' and count the number of pods.
+# Kubernetes 安全上下文（Security Context）实践测试
 
-  <details>
-  
-  ```
-  $ kubectl exec ubuntu-sleeper whoami
-  ```
-  
-  </details>
-  
-- Set a security context to run as user 1010.
+## 实践测试说明
+- 了解 Kubernetes 安全上下文的配置和使用
+- 参考练习测试：[Practice Test](https://kodekloud.com/topic/practice-test-security-contexts/)
 
-  <details>
-  
-  ```
-  $ kubectl get pods ubuntu-sleeper -o yaml > ubuntu.yaml
-  $ kubectl delete pod ubuntu-sleeper
-  $ vi ubuntu.yaml ( add securityContext Section)
-    securityContext:
-      runAsUser: 1010
-  $ kubectl create -f ubuntu.yaml
-  ```
-  
-  </details>
-  
-- The User ID defined in the securityContext of the container overrides the User ID in the POD.
- 
-- The User ID defined in the securityContext of the POD is carried over to all the PODs in the container.
+## 问题描述与解决方案
 
-- Run kubectl exec -it ubuntu-sleeper -- date -s '19 APR 2012 11:14:00'
-  
-  <details>
-  
-  ```
-  $ kubectl exec -it ubuntu-sleeper -- date -s '19 APR 2012 11:14:00'
-  ```
-  
-  </details>
-  
-- Add SYS_TIME capability to the container's securityContext
-  
-  <details>
-  
-  ```
-  $ kubectl get pods ubuntu-sleeper -o yaml > ubuntu.yaml
-  $ kubectl delete pod ubuntu-sleeper
-  $ vi ubuntu.yaml
-  
-  Under container section add the below
-  
+### 1. 查看 Pod 中的用户身份
+- 执行命令 `kubectl exec ubuntu-sleeper -- whoami` 并统计 Pod 数量
+
+<details>
+```
+$ kubectl exec ubuntu-sleeper -- whoami
+```
+```
+controlplane ~ ✖ kubectl exec -it  ubuntu-sleeper -- /bin/sh
+whoami
+root
+```
+</details>
+
+### 2. 设置安全上下文以特定用户运行
+- 设置安全上下文以用户 ID 1010 运行
+
+<details>
+```
+$ kubectl get pods ubuntu-sleeper -o yaml > ubuntu.yaml
+$ kubectl delete pod ubuntu-sleeper
+$ vi ubuntu.yaml (添加 securityContext 部分)
   securityContext:
+    runAsUser: 1010
+$ kubectl create -f ubuntu.yaml
+```
+</details>
+
+### 3. 安全上下文规则说明
+- 容器安全上下文（securityContext）中定义的用户 ID 会覆盖 Pod 中的用户 ID
+- Pod 安全上下文（securityContext）中定义的用户 ID 会应用到容器中的所有 Pod
+
+### 4. 修改系统时间测试
+- 执行命令尝试修改系统时间：`kubectl exec -it ubuntu-sleeper -- date -s '19 APR 2012 11:14:00'`
+
+<details>
+```
+$ kubectl exec -it ubuntu-sleeper -- date -s '19 APR 2012 11:14:00'
+```
+</details>
+
+### 5. 为容器添加系统权限
+- 向容器的安全上下文（securityContext）添加 SYS_TIME 权限
+
+<details>
+```
+$ kubectl get pods ubuntu-sleeper -o yaml > ubuntu.yaml
+$ kubectl delete pod ubuntu-sleeper
+$ vi ubuntu.yaml
+
+在容器部分添加以下内容：
+
+securityContext:
+    capabilities:
+      add: ["SYS_TIME"]
+      
+$ kubectl create -f ubuntu.yaml
+```
+
+---
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-sleeper
+  namespace: default
+spec:
+  containers:
+  - command:
+    - sleep
+    - "4800"
+    image: ubuntu
+    name: ubuntu-sleeper
+    securityContext:      # 更新 securityContext
       capabilities:
         add: ["SYS_TIME"]
-        
-  $ kubectl create -f ubuntu.yaml
-  ```
-  
-  </details>
-  
- - Now try to run the below command in the pod to set the date. If the security capability was added correctly, it should work. If it doesn't make sure you changed the user back to root.
-  
-   <details>
-  
-   ```
-   $ kubectl exec -it ubuntu-sleeper -- date -s '19 APR 2012 11:14:00'
-   ```
-  
-   </details>
-   
+```
+</details>
+
+### 6. 验证权限设置
+- 现在尝试在 Pod 中运行以下命令来设置日期。如果安全权限添加正确，则应该能够成功。如果失败，请确保将用户更改回 root。
+
+<details>
+```
+$ kubectl exec -it ubuntu-sleeper -- date -s '19 APR 2012 11:14:00'
+```
+</details>
