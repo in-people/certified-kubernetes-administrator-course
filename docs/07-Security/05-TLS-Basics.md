@@ -12,6 +12,7 @@ In this section, we will take a look at TLS Basics
   
 ## Symmetric Encryption
 - It is a secure way of encryption, but it uses the same key to encrypt and decrypt the data and the key has to be exchanged between the sender and the receiver, there is a risk of a hacker gaining access to the key and decrypting the data.
+- 对称加密 这是一种安全的加密方式，但加密和解密数据使用相同的密钥，且密钥必须在发送方与接收方之间交换。这种方式存在黑客获取密钥并解密数据的风险。
 
   ![cert2](../../images/cert2.PNG)
   
