@@ -1,11 +1,15 @@
 # KubeConfig 
   - Take me to [Video Tutorial](https://kodekloud.com/topic/kubeconfig/)
+kubeconfig 是一个配置文件，它包含了 **连接到 Kubernetes 集群所需的所有认证和连接信息** 。用户不用在每次运行 kubectl 命令时都手动指定这些参数。
 
 In this section, we will take a look at kubeconfig in kubernetes
 
 
 #### Client uses the certificate file and key to query the kubernetes Rest API for a list of pods using curl.
 - You can specify the same using kubectl
+需要手动指定所有认证参数  
+直接调用 REST API  
+返回 JSON 格式数据
 
   ![kc1](../../images/kc1.PNG)
   
