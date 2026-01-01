@@ -45,6 +45,7 @@ In this section, we will take a look at authentication in a kubernetes cluster
   ![auth5](../../images/auth5.PNG)
   
 - We can have additional column in the user-details.csv file to assign users to specific groups.
+-  -H "Authorization: Bearer ..."	认证头。这是向 Kubernetes API 证明身份的方式。 KpjCVbI7rCFAHYPkBzRb7gulcUc4B 是一个 Service Account Token（服务账户令牌）或 User Token（用户令牌）。它相当于访问集群的“密码” 。
 
   ![auth6](../../images/auth6.PNG)
   
