@@ -4,6 +4,10 @@
 
 In this section, we will take a look at **DNS in the Kubernetes Cluster**
 
+
+![net-2626](../../images/net2626.PNG)
+
+
 ## Pod DNS Record
 
 - The following DNS resolution:
