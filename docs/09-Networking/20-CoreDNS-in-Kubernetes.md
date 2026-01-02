@@ -14,6 +14,7 @@ coredns-66bff467f8-2vghh                  1/1     Running   0          53m
 coredns-66bff467f8-t5nzm                  1/1     Running   0          53m
 ```
 
+
 ## To view the Deployment
 
 ```
@@ -55,6 +56,8 @@ Corefile:
 }
 ```
 
+![net-2627](../../images/net2627.PNG)
+
 ## To view the Service 
 
 ```
@@ -73,6 +76,8 @@ clusterDomain: cluster.local
 
 ```
 
+![net-2628](../../images/net2628.PNG)
+
 ## To view the fully qualified domain name
 
 - With the `host` command, we will get fully qualified domain name (FQDN).
@@ -90,6 +95,8 @@ web-service.default.svc.cluster.local has address 10.106.112.101
 $ host web-service.default.svc.cluster.local
 web-service.default.svc.cluster.local has address 10.106.112.101
 ```
+
+![net-2629](../../images/net2629.PNG)
 
 ## To view the `/etc/resolv.conf` file
 
@@ -117,6 +124,8 @@ Name:      10-244-1-4.default.pod.cluster.local
 Address 1: 10.244.1.4 
 ```
 
+![net-2631](../../images/net2631.PNG)
+
 ## Resolve the Service
 
 ```
@@ -133,7 +142,7 @@ Name:      web-service.default.svc.cluster.local
 Address 1: 10.106.112.101 web-service.default.svc.cluster.local
 
 ```
-
+![net-2630](../../images/net2630.PNG)
 
 #### References Docs
 
