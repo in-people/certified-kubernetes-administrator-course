@@ -4,10 +4,14 @@
 
 In this section, we will take a look at **Container Networking Interface (CNI) in Kubernetes**
 
+![net-1](../../images/net2621.PNG)
+
 ## Configuring CNI
 
 ![net-1](../../images/net1.PNG)
 
+
+![net-1](../../images/net2622.PNG)
 
 - Check the status of the Kubelet Service
 
