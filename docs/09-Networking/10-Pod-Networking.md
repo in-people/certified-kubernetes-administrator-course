@@ -25,6 +25,9 @@ $ ip link add v-net-0 type bridge
 $ ip link add v-net-0 type bridge
 ```
 
+![net-2616](../../images/net2616.PNG)
+
+
 - Currently it's down, turn it up.
 
 > node01
