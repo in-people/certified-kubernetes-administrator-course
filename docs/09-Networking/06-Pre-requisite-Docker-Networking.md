@@ -188,6 +188,31 @@ $ iptables \
       --to-destination 172.18.0.6:80
 ```
 
+```bash
+$ iptables \
+     -t nat \
+     -A DOCKER \
+     -j DNAT \
+     --dport 8080 \
+     --to-destination 172.18.0.6:80
+```
+
+## 🔍 含义解释：
+
+这条命令是在 nat 表的 DOCKER 链 中添加 DNAT 规则，这是 Docker 引擎自动管理的链，用于处理容器端口映射（如 docker run -p 8080:80）。
+
+### 逐部分说明：
+
+| 部分 | 说明 |
+|------|------|
+| -t nat | 操作 NAT 表 |
+| -A DOCKER | 在 DOCKER 链末尾追加规则<br>→ Docker 默认在此链处理端口转发 |
+| -j DNAT | 执行目标地址转换 |
+| --dport 8080 | 匹配目标端口为 8080 的流量 |
+| --to-destination 172.18.0.6:80 | 将目标改为容器 IP 172.18.0.6 的 80 端口 |
+
+💡 这正是 docker run -p 8080:80 命令背后自动生成的规则！
+
 ## List the Iptables rules
 
 ```
