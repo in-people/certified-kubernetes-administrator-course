@@ -192,6 +192,71 @@
    ```
    netstat -anp | grep etcd
    ```
+```bash
+netstat -anp | grep etcd
+```
+
+```bash
+tcp        0      0 127.0.0.1:2379          0.0.0.0:*               LISTEN      2811/etcd           
+tcp        0      0 127.0.0.1:2381          0.0.0.0:*               LISTEN      2811/etcd           
+tcp        0      0 192.168.126.139:2380    0.0.0.0:*               LISTEN      2811/etcd           
+tcp        0      0 192.168.126.139:2379    0.0.0.0:*               LISTEN      2811/etcd           
+tcp        0      0 127.0.0.1:2379          127.0.0.1:37874         ESTABLISHED 2811/etcd           
+tcp        0      0 127.0.0.1:2379          127.0.0.1:37888         ESTABLISHED 2811/etcd           
+tcp        0      0 127.0.0.1:2379          127.0.0.1:37636         ESTABLISHED 2811/etcd           
+tcp        0      0 127.0.0.1:2379          127.0.0.1:37700         ESTABLISHED 2811/etcd           
+tcp        0      0 127.0.0.1:2379          127.0.0.1:37556         ESTABLISHED 2811/etcd           
+tcp        0      0 127.0.0.1:2379          127.0.0.1:38558         ESTABLISHED 2811/etcd           
+tcp        0      0 127.0.0.1:2379          127.0.0.1:37918         ESTABLISHED 2811/etcd
+```
+
+请问这是什么意思？
+
+## 你运行的命令：
+
+```bash
+netstat -anp | grep etcd
+```
+
+输出显示了 etcd 进程（PID 2811）当前监听的端口和建立的连接。下面逐行解释其含义，并分析你的 etcd 配置状态。
+
+## 🔍 命令说明
+
+netstat -anp：
+- -a：显示所有连接和监听端口
+- -n：以数字形式显示地址/端口（不解析域名或服务名）
+- -p：显示进程 PID 和名称（需 root 权限才能看到全部）
+- grep etcd：只过滤包含 "etcd" 的行
+
+## ✅ 输出解析
+
+### 🟢 1. 监听（LISTEN）状态的端口
+
+| 行 | 含义 |
+|----|------|
+| tcp 0 0 127.0.0.1:2379 0.0.0.0:* LISTEN 2811/etcd | 仅本地回环监听 2379 → 只允许本机程序（如 kube-apiserver）通过 127.0.0.1 访问 etcd 客户端接口 |
+| tcp 0 0 127.0.0.1:2381 0.0.0.0:* LISTEN 2811/etcd | 监听本地 2381 端口（非标准端口，可能是自定义配置或备用端口） |
+| tcp 0 0 192.168.126.139:2380 0.0.0.0:* LISTEN 2811/etcd | Peer 端口对外监听 → 其他 etcd 节点可通过 192.168.126.139:2380 与它通信（用于集群同步） |
+| tcp 0 0 192.168.126.139:2379 0.0.0.0:* LISTEN 2811/etcd | 客户端端口对外监听 → 允许其他机器（如另一个 Master 节点）直接访问此 etcd 实例 |
+
+📌 关键 IP：192.168.126.139 是这台主机的内网 IP。
+
+### 🔵 2. 已建立（ESTABLISHED）的连接
+
+多行类似：
+
+```text
+tcp 0 0 127.0.0.1:2379 127.0.0.1:37874 ESTABLISHED 2811/etcd
+```
+
+- 表示 本机有其他进程正在连接 127.0.0.1:2379（即 etcd 的客户端接口）
+- 源端口如 37874、37888 等是临时端口（由客户端随机选择）
+- 典型客户端：
+  - kube-apiserver
+  - etcdctl（手动执行命令时）
+  - 监控工具（如 Prometheus）
+
+✅ 这些连接正常，说明 Kubernetes 控制平面组件正在使用 etcd。
 
    <details>
    <summary>What the netstat options used mean</summary>
