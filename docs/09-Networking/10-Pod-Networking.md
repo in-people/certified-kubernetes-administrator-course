@@ -5,6 +5,10 @@
 In this section, we will take a look at **Pod Networking**
 
 
+![net-2615](../../images/net2615.PNG)
+
+
+
 - To add bridge network on each node
 
 > node01
@@ -57,6 +61,8 @@ $ ip addr add 10.244.3.1/24 dev v-net-0
 
 ![net-11](../../images/net11.PNG)
 
+![net-2617](../../images/net2617.PNG)
+
 - Check the reachability 
 
 ```
@@ -95,10 +101,17 @@ $ ip route add 10.244.2.2 via 192.168.1.12
 
 ![net-12](../../images/net12.PNG)
 
+![net-2618](../../images/net2618.PNG)
 
 ## Container Network Interface
 
+
 ![net-13](../../images/net13.PNG)
+
+
+![net-2619](../../images/net2619.PNG)
+
+![net-2620](../../images/net2620.PNG)
 
 
 
