@@ -1,152 +1,201 @@
 # Practice Test CoreDNS in Kubernetes
 
-  - Take me to [Practice Test](https://kodekloud.com/topic/practice-test-coredns-in-kubernetes/)
+- Take me to [Practice Test](https://kodekloud.com/topic/practice-test-coredns-in-kubernetes/)
 
-#### Solution 
+## Solution
 
-  1. Check the Solution
+### 1. Check the Solution
 
-     <details>
+```
+CoreDNS
+```
 
-      ```
-      CoreDNS
-      ```
-     </details>
-  
-  2. Check the Solution
+`kubectl get pods -n kube-system` and look for the DNS pods.
 
-     <details>
+```bash
+kubectl get po -A -o wide | grep dns
+```
 
-      ```
-      2
-      ```
-     </details>
+```
+kube-system    coredns-6678bcd974-btxxb               1/1     Running
+```
 
-  3. Check the Solution
+```bash
+kubectl get svc -A
+```
 
-     <details>
+```
+NAMESPACE     NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                  AGE
+kube-system   kube-dns       ClusterIP   172.20.0.10      <none>        53/UDP,53/TCP,9153/TCP   9m45s
+```
 
-      ```
-      10.96.0.10
-      ```
-     </details>
+```bash
+kubectl get deployment -A | grep coredns
+```
 
-  4. Check the Solution
+```
+kube-system   coredns   2/2     2            2           11m
+```
 
-     <details>
+Where is the configuration file located for configuring the CoreDNS service?
 
-      ```
-      /etc/coredns/Corefile
+```bash
+controlplane ~ ✖ kubectl get deployment coredns -n kube-system  -oyaml | grep conf
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"k8s-app":"kube-dns"},"name":"coredns","namespace":"kube-system"},"spec":{"replicas":2,"selector":{"matchLabels":{"k8s-app":"kube-dns"}},"strategy":{"rollingUpdate":{"maxUnavailable":1},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"k8s-app":"kube-dns"}},"spec":{"affinity":{"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"k8s-app","operator":"In","values":["kube-dns"]}]},"topologyKey":"kubernetes.io/hostname"},"weight":100}]}},"containers":[{"args":["-conf","/etc/coredns/Corefile"],
+```
 
-      OR
+### 2. Check the Solution
 
-      kubectl -n kube-system describe deployments.apps coredns | grep -A2 Args | grep Corefile
-      ```
-     </details>
+```
+2
+```
 
-  5. Check the Solution
+### 3. Check the Solution
 
-     <details>
+```
+10.96.0.10
+```
 
-      ```
-      Configured as a ConfigMapObject
-      ```
-     </details>
+### 4. Check the Solution
 
-  6. Check the Solution
+```
+/etc/coredns/Corefile
 
-     <details>
+OR
 
-      ```
-      CoreDNS
-      ```
-     </details>
+kubectl -n kube-system describe deployments.apps coredns | grep -A2 Args | grep Corefile
+```
 
-  7. Check the Solution
+### 5. Check the Solution
 
-     <details>
+```
+Configured as a ConfigMapObject
+```
 
-      ```
-      coredns
-      ```
-     </details>
+### 6. Check the Solution
 
-  8. Check the Solution
+```
+CoreDNS
+```
 
-     <details>
+### 7. Check the Solution
 
-      ```
-      cluster.local
-      ```
-     </details>
+```
+coredns
+```
 
-  9. Check the Solution
+### 8. Check the Solution
 
-     <details>
+What is the root domain/zone configured for this kubernetes cluster?
 
-      ```
-      Ok
-      ```
-     </details>
+```bash
+kubectl describe configmap coredns -n kube-system
+```
 
-  10. Check the Solution
+```
+Name:         coredns
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  <none>
 
-      <details>
+Data
+====
+Corefile:
+----
+.:53 {
+    errors
+    health {
+       lameduck 5s
+    }
+    ready
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+       pods insecure
+       fallthrough in-addr.arpa ip6.arpa
+       ttl 30
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf {
+       max_concurrent 1000
+    }
+    cache 30
+    loop
+    reload
+    loadbalance
+}
 
-       ```
-       web-service
-       ```
-      </details>
+BinaryData
+====
 
-  11. Check the Solution
+Events:  <none>
+```
 
-      <details>
- 
-       ```
-       web-serivce.default.pod
-       ```
-      </details>
+```
+cluster.local
+```
 
-  12. Check the Solution
+### 9. Check the Solution
 
-      <details>
- 
-       ```
-       web-service.payroll
-       ```
-      </details>
+```
+Ok
+```
 
-  13. Check the Solution
+### 10. Check the Solution
 
-      <details>
- 
-       ```
-       web-service.payroll.svc.cluster
-       ```
-      </details>
+```
+web-service
+```
 
-  14. Check the Solution
+### 11. Check the Solution
 
-      <details>
- 
-       ```
-       kubectl edit deploy webapp
- 
-       Search for DB_Host and Change the DB_Host from mysql to mysql.payroll
- 
-       spec:
-         containers:
-         - env:
-           - name: DB_Host
-             value: mysql.payroll
-       ```
-      </details>
- 
-  15. Check the Solution
+```
+web-serivce.default.pod
+```
 
-      <details>
- 
-       ```
-       kubectl exec -it hr -- nslookup mysql.payroll > /root/nslookup.out
-       ```
-      </details>
+### 12. Check the Solution
+
+```
+web-service.payroll
+```
+
+### 13. Check the Solution
+
+```
+web-service.payroll.svc.cluster
+```
+
+### 14. Check the Solution
+
+```
+kubectl edit deploy webapp
+
+Search for DB_Host and Change the DB_Host from mysql to mysql.payroll
+
+spec:
+  containers:
+  - env:
+    - name: DB_Host
+      value: mysql.payroll
+```
+
+### 15. Check the Solution
+
+```
+kubectl exec -it hr -- nslookup mysql.payroll > /root/nslookup.out
+```
+
+```bash
+kubectl exec hr -- nslookup mysql.payroll > /root/CKA/nslookup.out
+```
+
+```bash
+controlplane /etc ➜  cat /root/CKA/nslookup.out
+```
+
+```
+Server:         172.20.0.10
+Address:        172.20.0.10#53
+
+Name:   mysql.payroll.svc.cluster.local
+Address: 172.20.126.129
+```
