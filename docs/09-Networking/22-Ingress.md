@@ -7,11 +7,28 @@ In this section, we will take a look at **Ingress**
 - Ingress Controller
 - Ingress Resources
 
+load-balance存在的问题： 如果有多个服务，需要多个load-balance，数量大、复杂、难以管理。
+
+![net-2632](../../images/net2632.PNG)  
+
+
+INGRESS 概述  
+![net-2633](../../images/net2633.PNG)  
+
+INGRESS组成： Ingress Controller + Ingress Resources  
+
+![net-2634](../../images/net2634.PNG)  
+
 ## Ingress Controller
 
 - Deployment of **Ingress Controller**
 
+
+
 ## ConfigMap
+
+CONFIGMAP  
+![net-2635](../../images/net2635.PNG)  
 
 ```
 kind: ConfigMap
@@ -62,6 +79,8 @@ spec:
 
 ## ServiceAccount
 
+![net-2637](../../images/net2637.PNG)  
+
 - ServiceAccount require for authentication purposes along with correct Roles, ClusterRoles and RoleBindings.
 
 - Create a ingress service account
@@ -71,6 +90,8 @@ serviceaccount/ingress-serviceaccount created
 ```
 
 ## Service Type - NodePort
+
+![net-2636](../../images/net2636.PNG)  
 
 ```
 # service-Nodeport.yaml
@@ -106,6 +127,9 @@ $ kubectl get service
 
 ## Ingress Resources
 
+![net-2638](../../images/net2638.PNG)  
+
+
 ```
 Ingress-wear.yaml
 
@@ -135,6 +159,8 @@ ingress-wear   <none>   *                 80      18s
 ## Ingress Resource - Rules
 
 - 1 Rule and 2 Paths.
+
+![net-2641](../../images/net2641.PNG)  
 
 ```
 apiVersion: extensions/v1beta1
@@ -177,6 +203,9 @@ Events:
 ```
 
 - 2 Rules and 1 Path each.
+
+![net-2640](../../images/net2640.PNG)  
+
 ```
 # Ingress-wear-watch.yaml
 
