@@ -134,6 +134,38 @@ Events:  <none>
 cluster.local
 ```
 
+# Kubernetes 集群域名说明
+
+是的，你这个 Kubernetes 集群配置的根域名（或集群域名）是：**cluster.local**。
+
+## cluster.local 是什么意思？
+
+在你执行的命令输出中，CoreDNS 的 Corefile 有这样一行：
+
+```conf
+kubernetes cluster.local in-addr.arpa ip6.arpa {
+```
+
+这表示：CoreDNS 将为 `cluster.local` 这个域名及其子域提供 DNS 解析服务。
+
+换句话说，Kubernetes 集群内部所有 Service 和 Pod 的 DNS 名称，都以 `cluster.local` 为后缀。
+
+## 它是怎么用的？
+
+Kubernetes 会自动为每个 Service 和（部分）Pod 生成标准的完整域名（FQDN），格式如下：
+
+### Service 的 FQDN
+
+```text
+<service名称>.<命名空间>.svc.cluster.local
+```
+
+**例如：**
+
+你在 `default` 命名空间中创建了一个叫 `nginx` 的 Service，
+它的完整域名就是：`nginx.default.svc.cluster.local`
+
+
 ### 9. Check the Solution
 
 ```
