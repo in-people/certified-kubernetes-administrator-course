@@ -443,7 +443,7 @@ WEBAPP-PAY
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: test-ingress
+  name: critical-ingress  
   namespace: critical-space # 注意要有命名空间
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
