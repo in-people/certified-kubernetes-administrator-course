@@ -128,7 +128,7 @@ $ kubectl config view --kubeconfig my-kube-config
 </details>
 
 ### 5. 切换上下文操作
-- 执行命令切换到 research 上下文
+- 执行命令**切换到 research 上下文**
 
 <details>
 ```
