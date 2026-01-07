@@ -87,6 +87,10 @@ Solutions to practice test - network policies
   
   </details>
 
+ 用于控制 default 命名空间中带有标签 name: internal 的 Pod 的出站（Egress）流量  
+ 允许 internal Pod 向 同命名空间内标签为 name: payroll 的 Pod 发起 TCP 连接到 8080 端口     
+ 如果 egress 规则只有 ports 而没有 to，表示允许访问任意目标（anywhere）的指定端口  
+
 ```json
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
