@@ -52,7 +52,64 @@ In this section, we will take a look at authentication in a kubernetes cluster
 ## Note
  
  ![note](../../images/note.PNG)
-  
+
+# Kubernetes API 安全认证说明
+
+## 1. kubectl 配置
+
+查看 kubectl 配置：
+
+```bash
+kubectl config view --raw
+```
+
+配置内容：
+
+```yaml
+apiVersion: v1
+clusters:
+- cluster:
+  certificate-authority: /etc/kubernetes/certs/ca.crt
+  server: https://127.0.0.1:6443
+  name: cluster.local
+contexts:
+- context:
+  cluster: cluster.local
+  user: kubectl
+  name: kubectl-to-cluster.local
+current-context: kubectl-to-cluster.local
+kind: Config
+users:
+- name: kubectl
+  user:
+  client-certificate: /etc/kubernetes/certs/kubectl.crt
+  client-key: /etc/kubernetes/certs/kubectl.key
+```
+
+## 2. 使用 curl 访问 Kubernetes API
+
+```bash
+curl --cacert /etc/kubernetes/certs/ca.crt \
+     --cert /etc/kubernetes/certs/kubectl.crt \
+     --key /etc/kubernetes/certs/kubectl.key \
+     https://127.0.0.1:6443/api/v1/namespaces/default/services?limit=500
+```
+
+## 3. 认证机制说明
+
+- **`--cacert`**: 验证服务器身份，确保连接到合法的 API Server
+
+- **`--cert` 和 `--key`**: 让 curl 向 Kubernetes API Server 证明"我是谁"的身份凭证
+  - 相当于登录时的用户名+密码
+  - 这里采用基于证书的安全认证方式
+
+### 权限说明
+
+1. kubectl 自动使用这对证书/私钥向 API Server 证明："我是 kubectl 用户，属于 system:masters 组"
+
+2. 如果证书中的 `O=system:masters`，Kubernetes 内置的 RBAC 规则会授予 `cluster-admin`（超级管理员）权限
+
+3. 在 curl 中加上 `--cert` 和 `--key`，相当于让 curl 扮演 kubectl 的角色，拥有相同权限  
   
 #### K8s Reference Docs
 - https://kubernetes.io/docs/reference/access-authn-authz/authentication/ 
