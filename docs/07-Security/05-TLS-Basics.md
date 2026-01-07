@@ -3,9 +3,9 @@
   
 In this section, we will take a look at TLS Basics
 
-## Certificate
+## Certificate 证书
 - A certificate is used to guarantee trust between 2 parties during a transaction.
-- Example: when a user tries to access web server, tls certificates ensure that the communication between them is encrypted.
+- Example: when a user tries to access web server, tls certificates ensure that the communication between them is encrypted 加密.
 
   ![cert1](../../images/cert1.PNG)
   
