@@ -47,6 +47,7 @@ spec:
       type: DirectoryOrCreate
 ```
 
+ ![dst](../../images/multi_containers.PNG)
 
 这幅图展示了一个典型的 基于 Kubernetes 的日志收集与分析架构，使用了 Elastic Stack（Elasticsearch + Kibana）并结合 Filebeat 作为轻量级数据采集器。我们来逐部分解析它的含义：
 
